@@ -1,0 +1,248 @@
+<html><head><script>(function(){
+  const injectedHref = "https://745489489-atari-embeds.googleusercontent.com/embeds/8ba78a5061a5008d7a0bac8cfaf5dc0c/inner-frame-minified.html?jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.en.9vdPKhB0RUg.O%2Fd%3D1%2Frs%3DAHpOoo97anj7zZ432JcN58tqJJp_A6WeOw%2Fm%3D__features__";
+  const siteUrl = "https://sites.google.com";
+  const injectedDomain = "745489489-atari-embeds.googleusercontent.com";
+  const BASE_FOR_REL = "https://745489489-atari-embeds.googleusercontent.com/embeds/8ba78a5061a5008d7a0bac8cfaf5dc0c/inner-frame-minified.html?jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.en.9vdPKhB0RUg.O%2Fd%3D1%2Frs%3DAHpOoo97anj7zZ432JcN58tqJJp_A6WeOw%2Fm%3D__features__";
+  function hookIMA() {
+    let _google = window.google;
+    Object.defineProperty(window, 'google', {
+      configurable: true, enumerable: true,
+      get: function() { return _google; },
+      set: function(v) {
+        _google = v;
+        if (v && v.ima) {
+           if (v.ima.settings && v.ima.settings.setPageUrl) { v.ima.settings.setPageUrl(siteUrl); }
+           if (v.ima.AdsRequest && !v.ima.AdsRequest.__patched) {
+             const OriginalAdsRequest = v.ima.AdsRequest;
+             v.ima.AdsRequest = function() {
+               const req = new OriginalAdsRequest();
+               req.descriptionUrl = siteUrl; req.contentUrl = siteUrl; req.url = siteUrl; req.pageUrl = siteUrl;
+               return req;
+             };
+             v.ima.AdsRequest.prototype = OriginalAdsRequest.prototype; v.ima.AdsRequest.__patched = true;
+           }
+        }
+      }
+    });
+  }
+  hookIMA();
+  setInterval(function() {
+    if (window.google && window.google.ima) {
+       if (window.google.ima.settings && window.google.ima.settings.setPageUrl) { window.google.ima.settings.setPageUrl(siteUrl); }
+       if (window.google.ima.AdsRequest && !window.google.ima.AdsRequest.__patched) {
+         const OriginalAdsRequest = window.google.ima.AdsRequest;
+         window.google.ima.AdsRequest = function() {
+            const req = new OriginalAdsRequest();
+            req.descriptionUrl = siteUrl; req.contentUrl = siteUrl; req.url = siteUrl;
+            return req;
+         };
+         window.google.ima.AdsRequest.prototype = OriginalAdsRequest.prototype; window.google.ima.AdsRequest.__patched = true;
+       }
+    }
+  }, 50);
+  const AD_HOSTS = ['gamemonetize.com', 'gamedistribution.com'];
+  function isAdHost(url){ try { return AD_HOSTS.some(h => url.includes(h)); } catch(e){ return false; } }
+  function absolutize(url){ try{ new URL(url); return url; }catch(e){ try { return new URL(url, BASE_FOR_REL).href; } catch(e2){ return url; } } }
+  function patchDomainParamToUrl(u){ try{ if(!(u instanceof URL)) u=new URL(u,location.href); const cur=u.searchParams.get('domain'); if(!cur||cur.trim()===''||cur.toLowerCase().startsWith('blob')){ u.searchParams.set('domain', injectedDomain); } return u.toString(); }catch(e){ return u.toString?u.toString():u; } }
+  const _fetch=window.fetch; window.fetch=function(i,n){ try{ let u=null; if(typeof i==='string')u=i; else if(i instanceof Request)u=i.url; if(u){ try{ new URL(u);}catch(e){u=absolutize(u);} if(isAdHost(u)){ const p=patchDomainParamToUrl(new URL(u,location.href)); i=(typeof i==='string')?p:new Request(p,i); } } }catch(e){} return _fetch.call(this,i,n); };
+  try{ const _o=XMLHttpRequest.prototype.open; XMLHttpRequest.prototype.open=function(m,u,a,s,p){ try{ let f=u; try{ new URL(f);}catch(e){ f=absolutize(f);} if(isAdHost(f)) f=patchDomainParamToUrl(new URL(f,location.href)); return _o.call(this,m,f,a!==false,s,p); }catch(e){ return _o.apply(this,arguments);} }; }catch(e){}
+  try{ Object.defineProperty(document,'referrer',{ get:function(){ return siteUrl; }, configurable:true }); }catch(e){}
+  const swfBlobCache=new Map();
+  async function fetchArrayBuffer(url){ const r=await fetch(url); if(!r.ok) throw new Error('fetch failed'); return await r.arrayBuffer(); }
+  async function swfToBlobUrl(url){ if(swfBlobCache.has(url)) return swfBlobCache.get(url); try{ const ab=await fetchArrayBuffer(url); const b=URL.createObjectURL(new Blob([ab],{type:'application/x-shockwave-flash'})); swfBlobCache.set(url,b); return b; }catch(e){ return url; } }
+  function tryConvertExistingSwfElements(){ try{ const objs=document.getElementsByTagName('object'); for(let o of objs){ const data=o.getAttribute('data')||''; if(data.toLowerCase().endsWith('.swf')){ (async function(el,src){ const abs=absolutize(src); const b=await swfToBlobUrl(abs); el.setAttribute('data',b); for(let p of el.getElementsByTagName('param')){ if((p.getAttribute('name')||'').toLowerCase()==='movie') p.setAttribute('value',b); } })(o,data); } } const embeds=document.getElementsByTagName('embed'); for(let e of embeds){ const src=e.getAttribute('src')||e.src||''; if(src.toLowerCase().endsWith('.swf')){ (async function(el,s){ const abs=absolutize(s); const b=await swfToBlobUrl(abs); el.setAttribute('src',b); })(e,src); } } }catch(e){} }
+  setTimeout(tryConvertExistingSwfElements,10);
+})();</script><base href="https://745489489-atari-embeds.googleusercontent.com/embeds/8ba78a5061a5008d7a0bac8cfaf5dc0c/inner-frame-minified.html?jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.en.9vdPKhB0RUg.O%2Fd%3D1%2Frs%3DAHpOoo97anj7zZ432JcN58tqJJp_A6WeOw%2Fm%3D__features__">
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	    <script>
+    (function() {
+        var OriginalWebSocket = window.WebSocket;        
+        window.WebSocket = function(url, protocols) {
+            var urlString = (typeof url === 'string') ? url : url.toString();
+            if (urlString.indexOf('exitgames') !== -1 || urlString.indexOf('1v1.lol') !== -1) {
+                var fakeSocket = {
+                    url: urlString,
+                    readyState: 1,
+                    onopen: null,
+                    onmessage: null,
+                    onclose: null,
+                    onerror: null,
+                    send: function(data) {},
+                    close: function() {},
+                    addEventListener: function(evt, cb) { 
+                        if(evt === 'open') this.onopen = cb;
+                        if(evt === 'message') this.onmessage = cb;
+                        if(evt === 'close') this.onclose = cb;
+                        if(evt === 'error') this.onerror = cb;
+                    },
+                    removeEventListener: function() {}
+                };
+                setTimeout(function() {
+                    if (fakeSocket.onopen) {
+                        fakeSocket.onopen(new Event('open'));
+                    }
+                }, 10);
+
+                return fakeSocket;
+            }
+            return new OriginalWebSocket(url, protocols);
+        };
+        
+        window.WebSocket.prototype = OriginalWebSocket.prototype;
+        window.WebSocket.CONNECTING = 0;
+        window.WebSocket.OPEN = 1;
+        window.WebSocket.CLOSING = 2;
+        window.WebSocket.CLOSED = 3;
+    })();
+    </script>
+<style>
+button {
+  min-width: 100%;
+  font-family: inherit;
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  background: #2c2c2c;
+  color: #fff;
+  padding: 18px 46px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #3f3f3f;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px #cbd6ee;
+}
+  
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@c91366f7f0a51bfccdb966a5cabcc39add3807ac/projects/rockpaperscissors/exercise/style.css">
+    <script src="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@c91366f7f0a51bfccdb966a5cabcc39add3807ac/projects/rockpaperscissors/exercise/UnityProgress.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@c91366f7f0a51bfccdb966a5cabcc39add3807ac/projects/rockpaperscissors/exercise/2.7.js"></script>
+    <script type="text/javascript">
+
+      var gameInstance;
+
+      window.onload = function () {
+
+        let  bttn = document.createElement( "button" );
+        bttn.appendChild(document.createTextNode( "CLICK TO PLAY NOW" ));
+        bttn.setAttribute('id', 'run_game');
+        bttn.style.display = 'none';
+        bttn.style.position = 'absolute';
+        document.body.appendChild(bttn);
+        
+        bttn.style.display = 'block';
+        bttn.style.left = ((document.body.clientWidth - bttn.offsetWidth)/2) + 'px';
+        bttn.style.top = ((document.body.clientHeight - bttn.offsetHeight)/2) + 'px';
+
+        bttn.onclick = function () {
+
+          gameInstance = UnityLoader.instantiate("gameContainer", "https://cdn.jsdelivr.net/gh/ferialoken937373/clever@8424f74721ca8bb284b77c2b9f232b94171fe2e2/projects/rockpaperscissors/exercise/2.7.json", {onProgress: UnityProgress,Module:{onRuntimeInitialized: function() {UnityProgress(gameInstance, "complete")}}});
+          this.remove();
+        }
+      }
+    </script>
+  <title>classroom.google.com</title><link rel="icon" href="https://ssl.gstatic.com/classroom/favicon.png"><style>html,body,#container{margin:0;padding:0;width:100%!important;height:100%!important;overflow:hidden!important}</style><style type="text/css">#button {
+  display:none;
+}
+.imgb_vis {
+  animation: imgb-animation 7s linear;
+}
+@keyframes imgb-animation {
+  10% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(100px);
+  }
+  90% {
+    transform: translateX(100px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}</style><style>
+            #t4g-wrapper { position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 2147483647; display: flex; flex-direction: column; align-items: center; }
+            #t4g-toggle { background: rgba(0,0,0,0.8); color: #ffae00; border: 1px solid rgba(255,174,0,0.5); border-top: none; padding: 4px 12px; cursor: pointer; font-weight: bold; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; font-family: sans-serif; font-size: 11px; user-select: none; transition: all 0.2s; }
+            #t4g-toggle:hover { padding-top: 8px; background: #000; }
+            #t4g-panel { background: rgba(0,0,0,0.95); padding: 10px; gap: 8px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; border: 1px solid #ffae00; border-top: none; display: none; box-shadow: 0 5px 20px #000; }
+            #t4g-wrapper:hover #t4g-panel { display: flex; }
+            #t4g-wrapper:hover #t4g-toggle { display: none; }
+            .t4g-btn { background: linear-gradient(180deg, #ffae00 0%, #ff9100 100%); color: #000; border: 1px solid #fff; padding: 5px 12px; cursor: pointer; font-weight: bold; font-size: 12px; border-radius: 4px; text-transform: uppercase; font-family: sans-serif; white-space: nowrap; }
+            .t4g-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+            .t4g-btn:disabled { filter: grayscale(1); cursor: not-allowed; }
+            #t4g-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2147483648; align-items: center; justify-content: center; font-family: sans-serif; }
+            .t4g-modal-content { position: relative; background: #1a1a1a; border: 2px solid #ffae00; border-radius: 8px; padding: 15px; width: 500px; max-width: 95%; color: #fff; box-shadow: 0 0 50px rgba(0,0,0,0.9); text-align: center; }
+            .t4g-title { font-size: 16px; margin-bottom: 8px; color: #ffae00; font-weight: bold; }
+            #t4g-help-btn { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 50%; background: #0088ff; color: white; border: 1px solid white; font-weight: bold; cursor: pointer; line-height: 22px; padding: 0; font-size: 14px; }
+            #t4g-help-btn:hover { background: #00aaff; }
+            #t4g-textarea { width: 100%; height: 120px; background: #111; color: #0f0; border: 1px solid #444; padding: 8px; font-family: monospace; font-size: 10px; resize: none; margin-bottom: 10px; box-sizing: border-box; outline: none; }
+            #t4g-textarea:focus { border-color: #ffae00; }
+            #t4g-help-text { display: none; text-align: left; background: #222; padding: 10px; border: 1px solid #444; margin-bottom: 10px; font-size: 13px; line-height: 1.5; border-radius: 4px; color: #eee; }
+            .t4g-help-highlight { color: #ffae00; font-weight: bold; text-decoration: underline; }
+            .t4g-good { color: #0f0; }
+            .t4g-bad { color: #f55; }
+            .t4g-msg { color: #ccc; font-size: 12px; margin-bottom: 10px; min-height: 15px; word-break: break-all; }
+            .t4g-err { color: #ff5555; }
+            .t4g-btns { display: flex; gap: 10px; justify-content: center; }
+            .t4g-close { background: #333; color: #ccc; border: 1px solid #555; }
+        </style></head>
+  <body>
+    <div class="webgl-content">
+      <div id="gameContainer" style="width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; position: relative; background: rgb(0, 0, 0);"><canvas id="#canvas" width="1365" height="945" style="width: 100%; height: 100%; cursor: default;"></canvas><div class="logo Dark" style="display: none;"></div><div class="progress Dark" style="display: none;"><div class="empty" style="width: 0%;"></div><div class="full" style="width: 100%;"></div></div></div>
+	        </div>
+    
+	<script src="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@39a90cb9cfb043b6e47becd5ba0410ed2092d5a6/projects/rockpaperscissors/exercise/1firebase-app.js"></script>
+
+	<!-- Add Firebase products that you want to use -->
+	<script src="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@39a90cb9cfb043b6e47becd5ba0410ed2092d5a6/projects/rockpaperscissors/exercise/1firebase-auth.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@39a90cb9cfb043b6e47becd5ba0410ed2092d5a6/projects/rockpaperscissors/exercise/1firebase-firestore.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/st39/sdk@main/api.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@39a90cb9cfb043b6e47becd5ba0410ed2092d5a6/projects/rockpaperscissors/exercise/1firebase.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@39a90cb9cfb043b6e47becd5ba0410ed2092d5a6/projects/rockpaperscissors/exercise/1login.js?v=2"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ferialoken937373/clever@39a90cb9cfb043b6e47becd5ba0410ed2092d5a6/projects/rockpaperscissors/exercise/1firestore.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  
+
+
+
+<div id="button" class="imgb imgb_vis" style="position: fixed; top: 10%; left: -100px; z-index: 10; display: none;"><a target="_blank" href="https://sites.google.com/view/classroom6x/" title="Unblocked Games Classroom 6x"><img src="https://lh4.googleusercontent.com/lUEWrXMVEr4AdjKISyJahDRJ61bwfvHdpeYm86Djn5U8oCm9dI60NGXSBqad9HUvzTXgqlkosA_hWV-VuXPjzrkGvh3_kNSgYk8ySWzXnDpbBCBiooyBbU8oBy3YBZMDkW8RcRVmDuC0raoeqZBm8kBlqs6c5mdfkJeN2aE68lXS_lcOZ5_F7lIuM6qLVg" width="100" height="30" style="cursor:pointer;" alt="The best Unblocked Games Classroom 6x site at school"></a></div><div id="t4g-wrapper"><div id="t4g-toggle">⚙️</div><div id="t4g-panel"><button class="t4g-btn" id="btn-save">💾 Save</button><button class="t4g-btn" id="btn-load">📂 Load</button></div></div><div id="t4g-modal">
+            <div class="t4g-modal-content">
+                <button id="t4g-help-btn">?</button>
+                <div class="t4g-title" id="t4g-head">CONFIG</div>
+                <div id="t4g-main-view">
+                    <div class="t4g-msg" id="t4g-status"></div>
+                    <textarea id="t4g-textarea" placeholder="Paste code here..."></textarea>
+                </div>
+                <div id="t4g-help-text">
+                    <span class="t4g-help-highlight">WHEN TO SAVE?</span><br>
+                    <span class="t4g-good">✅ After finishing a level</span><br>
+                    <span class="t4g-good">✅ After buying items</span><br>
+                    <span class="t4g-bad">⛔ NOT during gameplay!</span><br>
+                    <small>The game only saves when you complete something.</small><br><br>
+                    <span class="t4g-help-highlight">HOW TO SAVE:</span><br>
+                    1. Click <b>SAVE</b> button.<br>
+                    2. <b>Copy</b> the code.<br>
+                    3. Keep it safe (Notepad)!<br><br>
+                    <span class="t4g-help-highlight">HOW TO LOAD:</span><br>
+                    1. Click <b>LOAD</b> button.<br>
+                    2. <b>Paste</b> your code.<br>
+                    3. Click <b>RESTORE</b>.
+                </div>
+                <div class="t4g-btns">
+                    <button class="t4g-btn" id="t4g-action">ACTION</button>
+                    <button class="t4g-btn t4g-close" id="t4g-close">CLOSE</button>
+                </div>
+            </div></div><script src="blob:https://745489489-atari-embeds.googleusercontent.com/1ef88954-001b-4fac-8195-eaba8dad5c07" id="a96bf7f9ec45ce9224c9b5b9b42b17b2"></script></body></html>
